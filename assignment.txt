@@ -1,0 +1,77 @@
+The &quot;Conflicting Policy&quot; RAG System
+Format: Python / Jupyter Notebook
+
+1. The Scenario
+You are building an internal Q&amp;A Chatbot for &quot;TechCorp Inc.&quot; The HR department has a
+notorious habit of updating policies without deleting old versions, leading to a
+knowledge base full of conflicting information.
+Your task is to build a Retrieval-Augmented Generation (RAG) pipeline that can
+answer employee questions accurately by finding the correct version of the truth, citing
+its sources, and ignoring irrelevant noise.
+
+2. The Data (Create these files locally)
+Please create a folder named knowledge_base and save the following three text blocks
+as separate .txt files inside it.
+File 1: policy_v1_2021.txt (The &quot;Outdated&quot; Truth)
+TechCorp Work From Home Policy (Effective Date: Jan 1, 2021)
+Due to the global pandemic, all employees are required to work remotely.
+Effective immediately, working from the office is suspended until further notice.
+Employees may expense up to $500 for home office equipment.
+
+File 2: policy_v2_2024.txt (The &quot;Current&quot; Truth)
+TechCorp Return to Office Mandate (Effective Date: Jan 1, 2024)
+We are excited to welcome everyone back!
+Remote work is now capped at 1 day per week, and must be approved by a
+manager.
+The 100% remote work policy from 2021 is officially revoked.
+Employees are expected to be in the office 4 days a week.
+
+File 3: friday_cafeteria_menu.txt (The &quot;Noise&quot;)
+TechCorp Cafeteria Menu - Weekly Specials
+Monday: Tacos
+Tuesday: Burgers
+Friday: Fish &amp; Chips (Chef&#39;s Special!)
+
+Note: The cafeteria is closed for cleaning on Friday afternoons.
+Come enjoy a break from work!
+
+3. The Task
+Write a Python script (or Notebook) that ingests these documents and answers the
+following user query:
+&quot;Can I work fully remotely this Friday?&quot;
+
+4. Requirements &amp; Constraints
+Your solution must demonstrate the following capabilities:
+1. Handling Conflicts: The system must recognize that policy_v2_2024.txt
+overrides policy_v1_2021.txt. If your model says &quot;Yes, you can work remotely,&quot;
+you fail.
+2. Noise Filtering: The query mentions &quot;Friday.&quot; File 3 also mentions &quot;Friday&quot;
+(cafeteria menu) but is irrelevant to the policy. Your retrieval step should ideally
+down-rank or ignore this file.
+3. Citations: The final answer must strictly cite the filename used to generate the
+answer.
+o Bad Output: &quot;No, you cannot.&quot;
+o Good Output: &quot;No, fully remote work is revoked as of Jan 2024. Sources:
+policy_v2_2024.txt.&quot;
+
+4. Tech Stack: You may use LangChain, LlamaIndex, or raw OpenAI/Anthropic
+APIs + a vector database of your choice (ChromaDB, FAISS, Pinecone, or a
+simple in-memory numpy array).
+
+5. How We Evaluate You (Public Guide)
+We are not just looking for a script that runs. We are looking for production instincts.
+● Accuracy: Does the model reliably identify the current policy (2024) vs. the old
+one?
+● Explainability: Does the system cite its sources so a human can verify the
+answer?
+
+● Noise Tolerance: Can the system ignore irrelevant documents (like the menu)
+even if they share keywords?
+● Code Quality: Is your code modular, readable, and easy for another engineer to
+pick up? (Please include a README with setup instructions).
+
+6. Submission
+Please reply with a link to a GitHub Gist or a Repository containing:
+1. rag_pipeline.py (Your code)
+2. requirements.txt
+3. A screenshot or text output of the model&#39;s answer to the prompt.
